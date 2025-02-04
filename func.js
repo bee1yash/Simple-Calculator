@@ -51,18 +51,19 @@ function appendSquare() {
     clearDisplay();
     isResultDisplayed = false;
   }
-  display.value += "Math.pow(" + display.value + ",2)";
+  display.value = "Math.pow(" + display.value + ",2)";
 }
 
 function operate(operator) {
-  if (display.value === "" && operator !== "-") {
-    return;
-  }
-  if (/[+\-*/]$/.test(display.value)) {
-    return; // Заборона подвійних операторів
-  }
   isResultDisplayed = false;
-  display.value += operator;
+
+  if (operator.includes("Math.")) {
+    display.value += operator + "(";
+  } else {
+    if (display.value === "" && operator !== "-") return;
+    if (/[+\-*/]$/.test(display.value)) return;
+    display.value += operator;
+  }
 }
 
 function factorial(n) {
@@ -73,17 +74,13 @@ function factorial(n) {
 function calculate() {
   try {
     let expression = display.value;
-    expression = expression.replace(/Math.sqrt\(/g, "Math.sqrt(");
-    expression = expression.replace(/factorial\((\d+)\)/g, (_, num) =>
-      factorial(Number(num))
-    );
 
     const openParentheses = (expression.match(/\(/g) || []).length;
     const closeParentheses = (expression.match(/\)/g) || []).length;
-    const missingParentheses = openParentheses - closeParentheses;
-    expression += ")".repeat(missingParentheses);
+    expression += ")".repeat(openParentheses - closeParentheses);
 
-    display.value = eval(expression);
+    let result = eval(expression);
+    display.value = result !== undefined ? result : "";
     isResultDisplayed = true;
   } catch {
     display.value = "Error";

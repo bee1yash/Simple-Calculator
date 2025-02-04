@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
@@ -7,6 +5,15 @@
     <title>Engineering Calculator</title>
 </head>
 <body>
+    <div class="theme-switcher">
+        <label class="switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider round"></span>
+        </label>
+        
+        <span>Темний режим</span>
+    </div>
+
     <div class="calculator">
         <input type="text" class="display" id="display" disabled />
         <div class="buttons">
@@ -47,5 +54,5 @@
     </div>
 
     <script src="func.js"></script>
+    <script src="theme.js"></script>
 </body>
-</html>
