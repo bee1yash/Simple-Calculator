@@ -51,13 +51,27 @@ function appendSquare() {
     clearDisplay();
     isResultDisplayed = false;
   }
+
+  if (display.value.trim() === "" || /[+\-*/]$/.test(display.value)) {
+    Swal.fire({
+      icon: "warning",
+      title: "Помилка!",
+      text: "Спочатку введіть число!",
+      confirmButtonColor: "#007bff",
+    });
+    return;
+  }
+
   display.value = "Math.pow(" + display.value + ",2)";
 }
 
 function operate(operator) {
   isResultDisplayed = false;
 
-  if (operator.includes("Math.")) {
+  if (operator === "Math.pow(") {
+    if (display.value === "" || /[+\-*/]$/.test(display.value)) return;
+    display.value += "**";
+  } else if (operator.includes("Math.")) {
     display.value += operator + "(";
   } else {
     if (display.value === "" && operator !== "-") return;
