@@ -43,7 +43,18 @@ function appendFactorial() {
     clearDisplay();
     isResultDisplayed = false;
   }
-  display.value += "factorial(";
+
+  if (display.value.trim() === "" || /[+\-*/]$/.test(display.value)) {
+    Swal.fire({
+      icon: "warning",
+      title: "Помилка!",
+      text: "Спочатку введіть число!",
+      confirmButtonColor: "#007bff",
+    });
+    return;
+  }
+
+  display.value += "!";
 }
 
 function appendSquare() {
@@ -65,13 +76,35 @@ function appendSquare() {
   display.value = "Math.pow(" + display.value + ",2)";
 }
 
+function appendPi() {
+  if (isResultDisplayed) {
+    clearDisplay();
+    isResultDisplayed = false;
+  }
+  if (display.value !== "" && !/[+\-*/(]$/.test(display.value)) {
+    display.value += "*";
+  }
+  display.value += "Math.PI";
+}
+
+function appendExp() {
+  if (isResultDisplayed) {
+    clearDisplay();
+    isResultDisplayed = false;
+  }
+  if (display.value !== "" && !/[+\-*/]$/.test(display.value)) {
+    display.value += "*";
+  }
+  display.value += Math.E;
+}
+
 function operate(operator) {
   isResultDisplayed = false;
 
-  if (operator === "Math.pow(") {
-    if (display.value === "" || /[+\-*/]$/.test(display.value)) return;
-    display.value += "**";
-  } else if (operator.includes("Math.")) {
+  if (operator.includes("Math.")) {
+    if (display.value.endsWith("π")) {
+      display.value = display.value.slice(0, -1) + "Math.PI";
+    }
     display.value += operator + "(";
   } else {
     if (display.value === "" && operator !== "-") return;
@@ -88,6 +121,10 @@ function factorial(n) {
 function calculate() {
   try {
     let expression = display.value;
+
+    expression = expression.replace(/(\d+)!/g, (match, num) =>
+      factorial(Number(num))
+    );
 
     const openParentheses = (expression.match(/\(/g) || []).length;
     const closeParentheses = (expression.match(/\)/g) || []).length;

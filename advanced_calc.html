@@ -1,8 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engineering Calculator</title>
+    <title>Калькулятор</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="theme-switcher">
@@ -15,7 +17,7 @@
     </div>
 
     <div class="calculator">
-        <input type="text" class="display" id="display" disabled />
+        <input type="text" class="display" id="display" />
         <div class="buttons">
             <button onclick="append('7')">7</button>
             <button onclick="append('8')">8</button>
@@ -50,9 +52,13 @@
             <button onclick="appendFactorial()">n!</button>
             <button onclick="appendSquare()">x^2</button>
             <button onclick="operate('Math.log(')">ln</button>
+            <button onclick="appendPi()">π</button>
+            <button onclick="appendExp()">e</button>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="func.js"></script>
-    <script src="theme.js"></script>
+    
 </body>
+<button class="expand-button" onclick="location.href='calc.html'">Звичайний</button>
+<script src="theme.js"></script>
+<script src="func.js"></script>
+</html>

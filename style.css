@@ -182,3 +182,23 @@ input:checked + .slider::before {
     color: white;
     border: 1px solid #444;
 }
+.expand-button {
+    background: #007bff;
+    color: white;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border: none;
+    width: 200px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    position: absolute;
+    left: 20px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+
+.expand-button:hover {
+    background: #0056b3;
+}
+
