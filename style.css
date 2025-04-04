@@ -49,8 +49,8 @@ button {
     justify-content: center;
     line-height: 1.2;
     width: 100%;
-    height: 50px; 
-    box-sizing: border-box; 
+    height: 50px;
+    box-sizing: border-box;
 }
 
 button:hover {
@@ -182,6 +182,7 @@ input:checked + .slider::before {
     color: white;
     border: 1px solid #444;
 }
+
 .expand-button {
     background: #007bff;
     color: white;
@@ -193,12 +194,50 @@ input:checked + .slider::before {
     cursor: pointer;
     transition: background 0.3s;
     position: absolute;
-    left: 20px; 
-    top: 50%; 
-    transform: translateY(-50%); 
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .expand-button:hover {
     background: #0056b3;
 }
 
+.variables-container {
+    margin-top: 10px;
+    margin-left: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    z-index: 1000; 
+}
+
+.dark-mode .variables-container {
+    background: #333;
+    border-radius: 10px;
+    margin-left: 10px;
+    border: 1px solid #444;
+    color: white;
+}
+
+.variables-container button {
+    margin-bottom: 10px;
+}
+
+.swal2-popup {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+.swal2-title {
+    font-size: 20px !important;
+    color: #fff !important;
+}
+
+.swal2-confirm {
+    background-color: #28a745 !important;
+    color: white !important;
+}

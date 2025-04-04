@@ -1,6 +1,29 @@
 let display = document.getElementById("display");
 let isResultDisplayed = false;
 
+display.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    let input = display.value.trim();
+
+    let match = input.match(/^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.+)$/);
+    if (match) {
+      let varName = match[1];
+      let varValue = match[2];
+
+      try {
+        let evaluatedValue = eval(varValue);
+        saveVariable(varName, evaluatedValue);
+        display.value = evaluatedValue;
+      } catch {
+        display.value = "Error";
+      }
+    } else {
+      calculate();
+    }
+  }
+});
+
 function append(value) {
   if (isResultDisplayed) {
     clearDisplay();
@@ -35,7 +58,7 @@ function appendRoot() {
     clearDisplay();
     isResultDisplayed = false;
   }
-  display.value += "Math.sqrt(";
+  display.value += "√(";
 }
 
 function appendFactorial() {
@@ -46,10 +69,14 @@ function appendFactorial() {
 
   if (display.value.trim() === "" || /[+\-*/]$/.test(display.value)) {
     Swal.fire({
-      icon: "warning",
       title: "Помилка!",
       text: "Спочатку введіть число!",
-      confirmButtonColor: "#007bff",
+      icon: "warning",
+      heightAuto: false,
+      customClass: {
+        popup: "swal2-popup",
+        title: "swal2-title",
+      },
     });
     return;
   }
@@ -68,12 +95,13 @@ function appendSquare() {
       icon: "warning",
       title: "Помилка!",
       text: "Спочатку введіть число!",
+      heightAuto: false,
       confirmButtonColor: "#007bff",
     });
     return;
   }
 
-  display.value = "Math.pow(" + display.value + ",2)";
+  display.value = display.value + "²";
 }
 
 function appendPi() {
@@ -101,11 +129,8 @@ function appendExp() {
 function operate(operator) {
   isResultDisplayed = false;
 
-  if (operator.includes("Math.")) {
-    if (display.value.endsWith("π")) {
-      display.value = display.value.slice(0, -1) + "Math.PI";
-    }
-    display.value += operator + "(";
+  if (["Math.sin(", "Math.cos(", "Math.tan("].includes(operator)) {
+    display.value += operator.replace("Math.", "");
   } else {
     if (display.value === "" && operator !== "-") return;
     if (/[+\-*/]$/.test(display.value)) return;
@@ -117,10 +142,49 @@ function factorial(n) {
   if (n < 0) return NaN;
   return n === 0 ? 1 : n * factorial(n - 1);
 }
+function appendFunction(funcName) {
+  if (isResultDisplayed) {
+    clearDisplay();
+    isResultDisplayed = false;
+  }
+
+  if (display.value !== "" && !/[+\-*/(]$/.test(display.value)) {
+    display.value += "*";
+  }
+
+  display.value += funcName + "(";
+}
 
 function calculate() {
   try {
     let expression = display.value;
+
+    expression = expression.replace(/√/g, "Math.sqrt(");
+    expression = expression.replace(/²/g, "**2");
+
+    expression = expression.replace(/\^/g, "**");
+
+    expression = expression.replace(
+      /\b([a-zA-Z_][a-zA-Z0-9_]*)\b/g,
+      (match, varName) => {
+        if (storedVariables[varName] !== undefined) {
+          let value = storedVariables[varName];
+          if (!isNaN(value)) {
+            return Number(value);
+          } else {
+            return value;
+          }
+        }
+        return match;
+      }
+    );
+
+    expression = expression
+      .replace(/sin\(/g, "Math.sin(")
+      .replace(/cos\(/g, "Math.cos(")
+      .replace(/tan\(/g, "Math.tan(")
+      .replace(/log\(/g, "Math.log10(")
+      .replace(/ln\(/g, "Math.log(");
 
     expression = expression.replace(/(\d+)!/g, (match, num) =>
       factorial(Number(num))
