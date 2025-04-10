@@ -69,7 +69,6 @@ button[style] {
     background: #dc3545 !important;
 }
 
-/* Темна тема */
 .dark-mode {
     background-color: #121212;
     color: white;
@@ -202,7 +201,17 @@ input:checked + .slider::before {
 .expand-button:hover {
     background: #0056b3;
 }
+@media (max-width: 500px) {
+    .expand-button {
+        top: auto;
+        bottom: 20px;
+        transform: none;
+    }
 
+    .calculator {
+        margin-left: 100px; 
+    }
+}
 .variables-container {
     margin-top: 10px;
     margin-left: 10px;
@@ -241,3 +250,31 @@ input:checked + .slider::before {
     background-color: #28a745 !important;
     color: white !important;
 }
+.variable-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-grow: 1;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  
+  .delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .variable-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+  }

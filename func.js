@@ -15,7 +15,8 @@ display.addEventListener("keydown", function (event) {
         let evaluatedValue = eval(varValue);
         saveVariable(varName, evaluatedValue);
         display.value = evaluatedValue;
-      } catch {
+      } catch (error) {
+        console.error("Eval Error:", error.message);
         display.value = "Error";
       }
     } else {
@@ -154,7 +155,25 @@ function appendFunction(funcName) {
 
   display.value += funcName + "(";
 }
+function appendPower() {
+  if (isResultDisplayed) {
+    clearDisplay();
+    isResultDisplayed = false;
+  }
 
+  if (display.value.trim() === "" || /[+\-*/]$/.test(display.value)) {
+    Swal.fire({
+      icon: "warning",
+      title: "Помилка!",
+      text: "Спочатку введіть число!",
+      heightAuto: false,
+      confirmButtonColor: "#007bff",
+    });
+    return;
+  }
+
+  display.value += "^";
+}
 function calculate() {
   try {
     let expression = display.value;
@@ -197,8 +216,19 @@ function calculate() {
     let result = eval(expression);
     display.value = result !== undefined ? result : "";
     isResultDisplayed = true;
-  } catch {
-    display.value = "Error";
+  } catch (error) {
+    console.error("Calculation Error:", error.message);
+    clearDisplay();
+
+    Swal.fire({
+      icon: "error",
+      title: "Помилка обчислення!",
+      text: error.message.includes("is not defined")
+        ? `Змінна ${error.message.split(" ")[0]} не визначена!`
+        : error.message,
+      confirmButtonColor: "#007bff",
+      heightAuto: false,
+    });
   }
 }
 
@@ -212,6 +242,6 @@ function backspace() {
 
 display.addEventListener("input", function (event) {
   if (/^[.+*/]/.test(display.value)) {
-    display.value = "";
+    clearDisplay();
   }
 });
