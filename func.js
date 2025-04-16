@@ -2,6 +2,38 @@ let display = document.getElementById("display");
 let isResultDisplayed = false;
 
 display.addEventListener("keydown", function (event) {
+  const operatorKeys = ["+", "-", "*", "/", "."];
+  if (operatorKeys.includes(event.key)) {
+    const lastChar = display.value.slice(-1);
+    const secondLastChar = display.value.slice(-2, -1);
+
+    if (event.key === "*" && lastChar === "*" && secondLastChar !== "*") {
+      return;
+    }
+    if (operatorKeys.includes(lastChar)) {
+      event.preventDefault();
+      Swal.fire({
+        icon: "error",
+        text: "Не можна вводити кілька операторів поспіль.",
+        confirmButtonColor: "#007bff",
+        heightAuto: false,
+      });
+      return;
+    }
+    if (event.key === ".") {
+      const lastNumber = display.value.split(/[^0-9.]+/).pop();
+      if (lastNumber.includes(".")) {
+        event.preventDefault();
+        Swal.fire({
+          icon: "error",
+          text: "Не можна вводити більше однієї крапки в числі.",
+          confirmButtonColor: "#007bff",
+          heightAuto: false,
+        });
+      }
+    }
+  }
+
   if (event.key === "Enter") {
     event.preventDefault();
     let input = display.value.trim();
@@ -31,13 +63,19 @@ function append(value) {
     isResultDisplayed = false;
   }
 
-  if (display.value === "" && /[.+*/]/.test(value)) {
-    return;
+  const lastChar = display.value.slice(-1);
+
+  if (/[+\-*/]/.test(value)) {
+    if (display.value === "") {
+      if (value !== "-") return;
+    } else if (/[+\-*/]/.test(lastChar)) {
+      display.value = display.value.slice(0, -1) + value;
+      return;
+    }
   }
 
   display.value += value;
 }
-
 function appendDot() {
   if (isResultDisplayed) {
     clearDisplay();
@@ -70,7 +108,6 @@ function appendFactorial() {
 
   if (display.value.trim() === "" || /[+\-*/]$/.test(display.value)) {
     Swal.fire({
-      title: "Помилка!",
       text: "Спочатку введіть число!",
       icon: "warning",
       heightAuto: false,
@@ -94,7 +131,6 @@ function appendSquare() {
   if (display.value.trim() === "" || /[+\-*/]$/.test(display.value)) {
     Swal.fire({
       icon: "warning",
-      title: "Помилка!",
       text: "Спочатку введіть число!",
       heightAuto: false,
       confirmButtonColor: "#007bff",
@@ -130,11 +166,26 @@ function appendExp() {
 function operate(operator) {
   isResultDisplayed = false;
 
-  if (["Math.sin(", "Math.cos(", "Math.tan("].includes(operator)) {
-    display.value += operator.replace("Math.", "");
+  const trigFunctions = {
+    "Math.sin(": "sin(",
+    "Math.cos(": "cos(",
+    "Math.tan(": "tan(",
+  };
+
+  if (operator in trigFunctions) {
+    if (display.value !== "" && !/[+\-*/(]$/.test(display.value)) {
+      display.value += "*";
+    }
+    display.value += trigFunctions[operator];
+    return;
+  }
+
+  const lastChar = display.value.slice(-1);
+
+  if (/[+\-*/]/.test(lastChar)) {
+    display.value = display.value.slice(0, -1) + operator;
   } else {
     if (display.value === "" && operator !== "-") return;
-    if (/[+\-*/]$/.test(display.value)) return;
     display.value += operator;
   }
 }
@@ -164,7 +215,6 @@ function appendPower() {
   if (display.value.trim() === "" || /[+\-*/]$/.test(display.value)) {
     Swal.fire({
       icon: "warning",
-      title: "Помилка!",
       text: "Спочатку введіть число!",
       heightAuto: false,
       confirmButtonColor: "#007bff",
@@ -222,7 +272,6 @@ function calculate() {
 
     Swal.fire({
       icon: "error",
-      title: "Помилка обчислення!",
       text: error.message.includes("is not defined")
         ? `Змінна ${error.message.split(" ")[0]} не визначена!`
         : error.message,

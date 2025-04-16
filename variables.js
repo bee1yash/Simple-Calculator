@@ -1,6 +1,35 @@
 let storedVariables = JSON.parse(localStorage.getItem("storedVariables")) || {};
 
+const forbiddenVarNames = [
+  "sin",
+  "cos",
+  "tan",
+  "log",
+  "ln",
+  "sqrt",
+  "Math",
+  "Math.PI",
+  "Math.E",
+  "eval",
+  "constructor",
+  "prototype",
+  "valueOf",
+  "toString",
+  "name",
+  "length",
+];
+
 function saveVariable(name, value) {
+  if (forbiddenVarNames.includes(name)) {
+    Swal.fire({
+      icon: "error",
+      text: "Будь ласка, змініть назву змінної.",
+      confirmButtonColor: "#007bff",
+      heightAuto: false,
+    });
+    return;
+  }
+
   storedVariables[name] = value;
   localStorage.setItem("storedVariables", JSON.stringify(storedVariables));
   updateVariableDisplay();
