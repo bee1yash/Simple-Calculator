@@ -27,7 +27,7 @@ function saveVariable(name, value) {
       confirmButtonColor: "#007bff",
       heightAuto: false,
     });
-    return;
+    return clearDisplay();
   }
 
   storedVariables[name] = value;

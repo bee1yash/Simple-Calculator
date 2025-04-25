@@ -3,6 +3,10 @@ let isResultDisplayed = false;
 
 display.addEventListener("keydown", function (event) {
   const operatorKeys = ["+", "-", "*", "/", "."];
+  if (event.key === ",") {
+    event.preventDefault();
+    return;
+  }
   if (operatorKeys.includes(event.key)) {
     const lastChar = display.value.slice(-1);
     const secondLastChar = display.value.slice(-2, -1);
@@ -18,7 +22,7 @@ display.addEventListener("keydown", function (event) {
         confirmButtonColor: "#007bff",
         heightAuto: false,
       });
-      return;
+      return clearDisplay();
     }
     if (event.key === ".") {
       const lastNumber = display.value.split(/[^0-9.]+/).pop();
@@ -36,20 +40,40 @@ display.addEventListener("keydown", function (event) {
 
   if (event.key === "Enter") {
     event.preventDefault();
+
+    if (
+      display.value.trim() === "Помилка" ||
+      display.value.trim() === "Error"
+    ) {
+      clearDisplay();
+      return;
+    }
+
     let input = display.value.trim();
 
-    let match = input.match(/^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*(.+)$/);
+    let match = input.match(/^([\p{L}_][\p{L}\p{N}_]*)\s*=\s*(.+)$/u);
     if (match) {
       let varName = match[1];
       let varValue = match[2];
 
       try {
+        varValue = varValue.replace(
+          /([\p{L}_][\p{L}\p{N}_]*)/gu,
+          (match, name) => {
+            if (storedVariables[name] !== undefined) {
+              let value = storedVariables[name];
+              return isNaN(value) ? `"${value}"` : value;
+            }
+            return match;
+          }
+        );
+
         let evaluatedValue = eval(varValue);
         saveVariable(varName, evaluatedValue);
         display.value = evaluatedValue;
       } catch (error) {
         console.error("Eval Error:", error.message);
-        display.value = "Error";
+        display.value = "Помилка";
       }
     } else {
       calculate();
@@ -234,15 +258,11 @@ function calculate() {
     expression = expression.replace(/\^/g, "**");
 
     expression = expression.replace(
-      /\b([a-zA-Z_][a-zA-Z0-9_]*)\b/g,
+      /([\p{L}_][\p{L}\p{N}_]*)/gu,
       (match, varName) => {
         if (storedVariables[varName] !== undefined) {
           let value = storedVariables[varName];
-          if (!isNaN(value)) {
-            return Number(value);
-          } else {
-            return value;
-          }
+          return !isNaN(value) ? Number(value) : `"${value}"`;
         }
         return match;
       }
@@ -262,6 +282,16 @@ function calculate() {
     const openParentheses = (expression.match(/\(/g) || []).length;
     const closeParentheses = (expression.match(/\)/g) || []).length;
     expression += ")".repeat(openParentheses - closeParentheses);
+
+    if (/\/\s*0(?!\d)/.test(expression)) {
+      Swal.fire({
+        icon: "error",
+        text: "Не можна ділити на 0!",
+        confirmButtonColor: "#007bff",
+        heightAuto: false,
+      });
+      return clearDisplay();
+    }
 
     let result = eval(expression);
     display.value = result !== undefined ? result : "";
