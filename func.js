@@ -1,11 +1,25 @@
 let display = document.getElementById("display");
 let isResultDisplayed = false;
+function readyInput() {
+  if (isResultDisplayed) {
+    clearDisplay();
+    isResultDisplayed = false;
+  }
+}
 
 display.addEventListener("keydown", function (event) {
   const operatorKeys = ["+", "-", "*", "/", "."];
   if (event.key === ",") {
     event.preventDefault();
     return;
+  }
+  if (event.key === "|") {
+    const lastChar = display.value.slice(-1);
+    if (lastChar === "|") {
+      event.preventDefault();
+    } else {
+      readyInput();
+    }
   }
   if (operatorKeys.includes(event.key)) {
     const lastChar = display.value.slice(-1);
@@ -22,7 +36,7 @@ display.addEventListener("keydown", function (event) {
         confirmButtonColor: "#007bff",
         heightAuto: false,
       });
-      return clearDisplay();
+      return;
     }
     if (event.key === ".") {
       const lastNumber = display.value.split(/[^0-9.]+/).pop();
@@ -82,10 +96,7 @@ display.addEventListener("keydown", function (event) {
 });
 
 function append(value) {
-  if (isResultDisplayed) {
-    clearDisplay();
-    isResultDisplayed = false;
-  }
+  readyInput();
 
   const lastChar = display.value.slice(-1);
 
@@ -101,10 +112,7 @@ function append(value) {
   display.value += value;
 }
 function appendDot() {
-  if (isResultDisplayed) {
-    clearDisplay();
-    isResultDisplayed = false;
-  }
+  readyInput();
 
   if (display.value === "" || /[+\-*/]$/.test(display.value)) {
     return;
@@ -117,18 +125,12 @@ function appendDot() {
 }
 
 function appendRoot() {
-  if (isResultDisplayed) {
-    clearDisplay();
-    isResultDisplayed = false;
-  }
+  readyInput();
   display.value += "√(";
 }
 
 function appendFactorial() {
-  if (isResultDisplayed) {
-    clearDisplay();
-    isResultDisplayed = false;
-  }
+  readyInput();
 
   if (display.value.trim() === "" || /[+\-*/]$/.test(display.value)) {
     Swal.fire({
@@ -147,10 +149,7 @@ function appendFactorial() {
 }
 
 function appendSquare() {
-  if (isResultDisplayed) {
-    clearDisplay();
-    isResultDisplayed = false;
-  }
+  readyInput();
 
   if (display.value.trim() === "" || /[+\-*/]$/.test(display.value)) {
     Swal.fire({
@@ -166,10 +165,7 @@ function appendSquare() {
 }
 
 function appendPi() {
-  if (isResultDisplayed) {
-    clearDisplay();
-    isResultDisplayed = false;
-  }
+  readyInput();
   if (display.value !== "" && !/[+\-*/(]$/.test(display.value)) {
     display.value += "*";
   }
@@ -177,14 +173,25 @@ function appendPi() {
 }
 
 function appendExp() {
-  if (isResultDisplayed) {
-    clearDisplay();
-    isResultDisplayed = false;
-  }
+  readyInput();
   if (display.value !== "" && !/[+\-*/]$/.test(display.value)) {
     display.value += "*";
   }
   display.value += Math.E;
+}
+function appendAbs() {
+  readyInput();
+  const lastChar = display.value.slice(-1);
+
+  if (lastChar === "|") {
+    return;
+  }
+
+  if (display.value.includes("|")) {
+    display.value += "|";
+  } else {
+    display.value += "|";
+  }
 }
 
 function operate(operator) {
@@ -219,10 +226,7 @@ function factorial(n) {
   return n === 0 ? 1 : n * factorial(n - 1);
 }
 function appendFunction(funcName) {
-  if (isResultDisplayed) {
-    clearDisplay();
-    isResultDisplayed = false;
-  }
+  readyInput();
 
   if (display.value !== "" && !/[+\-*/(]$/.test(display.value)) {
     display.value += "*";
@@ -231,10 +235,7 @@ function appendFunction(funcName) {
   display.value += funcName + "(";
 }
 function appendPower() {
-  if (isResultDisplayed) {
-    clearDisplay();
-    isResultDisplayed = false;
-  }
+  readyInput();
 
   if (display.value.trim() === "" || /[+\-*/]$/.test(display.value)) {
     Swal.fire({
@@ -273,6 +274,8 @@ function calculate() {
       .replace(/cos\(/g, "Math.cos(")
       .replace(/tan\(/g, "Math.tan(")
       .replace(/log\(/g, "Math.log10(")
+      .replace(/ctg\(/g, "(1/Math.tan(")
+      .replace(/\|([^|]+)\|/g, "Math.abs($1)")
       .replace(/ln\(/g, "Math.log(");
 
     expression = expression.replace(/(\d+)!/g, (match, num) =>

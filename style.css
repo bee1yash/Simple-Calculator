@@ -11,22 +11,24 @@ body {
 .calculator {
     background: #ffffff;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     padding: 20px;
     width: 350px;
+    border: 2px solid #dcdcdc;
 }
 
 .display {
     width: 100%;
     height: 50px;
-    border: none;
+    border: 1px solid #ccc;
     margin-bottom: 20px;
     font-size: 1.5rem;
     text-align: right;
     padding: 10px;
     box-sizing: border-box;
-    background: #f9f9f9;
+    background: #e0e0e0;
     border-radius: 5px;
+
 }
 
 .buttons {
@@ -65,13 +67,10 @@ button.operator:hover {
     background: #1e7e34;
 }
 
-button[style] {
-    background: #dc3545 !important;
-}
-
 .dark-mode {
     background-color: #121212;
     color: white;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .dark-mode .calculator {
@@ -82,11 +81,7 @@ button[style] {
 .dark-mode .buttons button {
     background-color: #555;
     color: white;
-    border: none;
-    font-size: 1.2rem;
-    width: 100%;
-    height: 50px;
-    box-sizing: border-box;
+    border: 1px solid #666;
 }
 
 .dark-mode .buttons button:hover {
@@ -155,33 +150,6 @@ input:checked + .slider::before {
     transform: translateX(25px);
 }
 
-.dark-mode {
-    background-color: #121212;
-    color: white;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.dark-mode .calculator {
-    background-color: #333;
-    border: 1px solid #444;
-}
-
-.dark-mode .buttons button {
-    background-color: #555;
-    color: white;
-    border: 1px solid #666;
-}
-
-.dark-mode .buttons button:hover {
-    background-color: #777;
-}
-
-.dark-mode .display {
-    background-color: #222;
-    color: white;
-    border: 1px solid #444;
-}
-
 .expand-button {
     background: #007bff;
     color: white;
@@ -201,6 +169,7 @@ input:checked + .slider::before {
 .expand-button:hover {
     background: #0056b3;
 }
+
 @media (max-width: 500px) {
     .expand-button {
         top: auto;
@@ -212,6 +181,7 @@ input:checked + .slider::before {
         margin-left: 100px; 
     }
 }
+
 .variables-container {
     margin-top: 10px;
     margin-left: 10px;
@@ -250,6 +220,7 @@ input:checked + .slider::before {
     background-color: #28a745 !important;
     color: white !important;
 }
+
 .variable-button {
     background-color: #007bff;
     color: white;
@@ -260,9 +231,9 @@ input:checked + .slider::before {
     flex-grow: 1;
     font-size: 14px;
     white-space: nowrap;
-  }
-  
-  .delete-button {
+}
+
+.delete-button {
     background-color: #dc3545;
     color: white;
     border: none;
@@ -270,11 +241,11 @@ input:checked + .slider::before {
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
-  }
-  
-  .variable-wrapper {
+}
+
+.variable-wrapper {
     display: flex;
     align-items: center;
     gap: 5px;
     margin-bottom: 5px;
-  }
+}

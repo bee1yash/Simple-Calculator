@@ -6,6 +6,7 @@ const forbiddenVarNames = [
   "tan",
   "log",
   "ln",
+  "ctg",
   "sqrt",
   "Math",
   "Math.PI",
