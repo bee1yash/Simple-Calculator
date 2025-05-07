@@ -1,4 +1,9 @@
 let display = document.getElementById("display");
+const historyList = document.getElementById("history-list");
+const clearHistoryBtn = document
+  .getElementById("clear-history")
+  .addEventListener("click", clearHistory);
+
 let isResultDisplayed = false;
 function readyInput() {
   if (isResultDisplayed) {
@@ -33,7 +38,6 @@ display.addEventListener("keydown", function (event) {
       Swal.fire({
         icon: "error",
         text: "Не можна вводити кілька операторів поспіль.",
-        confirmButtonColor: "#007bff",
         heightAuto: false,
       });
       return;
@@ -45,7 +49,6 @@ display.addEventListener("keydown", function (event) {
         Swal.fire({
           icon: "error",
           text: "Не можна вводити більше однієї крапки в числі.",
-          confirmButtonColor: "#007bff",
           heightAuto: false,
         });
       }
@@ -156,7 +159,6 @@ function appendSquare() {
       icon: "warning",
       text: "Спочатку введіть число!",
       heightAuto: false,
-      confirmButtonColor: "#007bff",
     });
     return;
   }
@@ -242,7 +244,6 @@ function appendPower() {
       icon: "warning",
       text: "Спочатку введіть число!",
       heightAuto: false,
-      confirmButtonColor: "#007bff",
     });
     return;
   }
@@ -290,7 +291,6 @@ function calculate() {
       Swal.fire({
         icon: "error",
         text: "Не можна ділити на 0!",
-        confirmButtonColor: "#007bff",
         heightAuto: false,
       });
       return clearDisplay();
@@ -299,6 +299,9 @@ function calculate() {
     let result = eval(expression);
     display.value = result !== undefined ? result : "";
     isResultDisplayed = true;
+    if (result !== undefined && result !== "") {
+      saveToHistory(expression, result);
+    }
   } catch (error) {
     console.error("Calculation Error:", error.message);
     clearDisplay();
@@ -308,7 +311,6 @@ function calculate() {
       text: error.message.includes("is not defined")
         ? `Змінна ${error.message.split(" ")[0]} не визначена!`
         : error.message,
-      confirmButtonColor: "#007bff",
       heightAuto: false,
     });
   }
@@ -327,3 +329,56 @@ display.addEventListener("input", function (event) {
     clearDisplay();
   }
 });
+function saveToHistory(expression, result) {
+  let history = JSON.parse(localStorage.getItem("calcHistory")) || [];
+  history.unshift({ expression, result });
+  history = history.slice(0, 20);
+  localStorage.setItem("calcHistory", JSON.stringify(history));
+  updateHistoryDisplay();
+}
+
+function updateHistoryDisplay() {
+  const historyContainer = document.getElementById("history-list");
+  const containerWrapper = document.querySelector(".history-panel");
+
+  if (!historyContainer || !containerWrapper) return;
+
+  let history = JSON.parse(localStorage.getItem("calcHistory")) || [];
+
+  if (history.length === 0) {
+    containerWrapper.style.display = "none";
+    return;
+  } else {
+    containerWrapper.style.display = "block";
+  }
+
+  historyContainer.innerHTML = "";
+  history.forEach(({ expression, result }) => {
+    const div = document.createElement("div");
+    div.classList.add("history-item");
+
+    const expr = document.createElement("span");
+    expr.classList.add("history-expression");
+    expr.innerText = `${expression} = `;
+
+    const res = document.createElement("span");
+    res.classList.add("history-result");
+    res.innerText = result;
+
+    div.appendChild(expr);
+    div.appendChild(res);
+
+    div.addEventListener("click", () => {
+      display.value += result;
+    });
+
+    historyContainer.appendChild(div);
+  });
+}
+
+function clearHistory() {
+  localStorage.removeItem("calcHistory");
+  updateHistoryDisplay();
+}
+
+document.addEventListener("DOMContentLoaded", updateHistoryDisplay);

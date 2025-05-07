@@ -12,6 +12,8 @@ const forbiddenVarNames = [
   "Math.PI",
   "Math.E",
   "eval",
+  "var",
+  "let",
   "constructor",
   "prototype",
   "valueOf",
@@ -25,7 +27,6 @@ function saveVariable(name, value) {
     Swal.fire({
       icon: "error",
       text: "Будь ласка, змініть назву змінної.",
-      confirmButtonColor: "#007bff",
       heightAuto: false,
     });
     return clearDisplay();

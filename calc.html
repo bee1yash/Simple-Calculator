@@ -1,63 +1,80 @@
 <head>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Калькулятор</title>
 </head>
 <body>
-    <div class="theme-switcher">
-        <label class="switch">
-            <input type="checkbox" id="theme-toggle">
-            <span class="slider round"></span>
-        </label>
-        <span>Темний режим</span>
+  <div class="theme-switcher">
+    <label class="switch">
+      <input type="checkbox" id="theme-toggle" />
+      <span class="slider round"></span>
+    </label>
+    <span>Темний режим</span>
+  </div>
+  <div class="main-layout">
+    <div class="history-panel">
+      <h2>Історія обчислень</h2>
+      <div id="history-list"></div>
+      <button id="clear-history">Очистити історію</button>
     </div>
+  </div>
 
-    <div class="calculator">
-        <input type="text" class="display" id="display" autocomplete="off"/>
-        <div class="buttons">
-            <button onclick="append('7')">7</button>
-            <button onclick="append('8')">8</button>
-            <button onclick="append('9')">9</button>
-            <button onclick="operate('/')">/</button>
+  <div class="calculator">
+    <input
+      type="text"
+      class="display"
+      id="display"
+      autocomplete="off"
+      readonly
+    />
+    <div class="buttons">
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button onclick="operate('/')">/</button>
 
-            <button onclick="append('4')">4</button>
-            <button onclick="append('5')">5</button>
-            <button onclick="append('6')">6</button>
-            <button onclick="operate('*')">*</button>
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button onclick="operate('*')">*</button>
 
-            <button onclick="append('1')">1</button>
-            <button onclick="append('2')">2</button>
-            <button onclick="append('3')">3</button>
-            <button onclick="operate('-')">-</button>
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button onclick="operate('-')">-</button>
 
-            <button onclick="append('0')">0</button>
-            <button onclick="appendDot()">.</button>
-            <button onclick="operate('+')">+</button>
-            <button onclick="calculate()" style="background-color: #007bff;">=</button>
+      <button onclick="append('0')">0</button>
+      <button onclick="appendDot()">.</button>
+      <button onclick="operate('+')">+</button>
+      <button onclick="calculate()" style="background-color: #007bff">=</button>
 
-            <button onclick="appendPower()">x^y</button>
-            <button onclick="appendFunction('log')">log</button>
-            <button onclick="operate('Math.sin(')">sin</button>
-            <button onclick="clearDisplay()" style="background: #dc3545;">C</button>
+      <button onclick="appendPower()">x^y</button>
+      <button onclick="appendFunction('log')">log</button>
+      <button onclick="operate('Math.sin(')">sin</button>
+      <button onclick="clearDisplay()" style="background: #dc3545">C</button>
 
-            <button onclick="operate('Math.cos(')">cos</button>
-            <button onclick="operate('Math.tan(')">tan</button>
-            <button onclick="appendFunction('ctg')">ctg</button>
-            <button onclick="backspace()" style="background: #dc3545;">&#x232b;</button>
+      <button onclick="operate('Math.cos(')">cos</button>
+      <button onclick="operate('Math.tan(')">tan</button>
+      <button onclick="appendFunction('ctg')">ctg</button>
+      <button onclick="backspace()" style="background: #dc3545">
+        &#x232b;
+      </button>
 
-            <button onclick="appendRoot()">&#8730;</button>
-            <button onclick="appendAbs()">|x|</button>
-            <button onclick="appendFactorial()">n!</button>
-            <button onclick="appendSquare()">x^2</button>
-            
-            <button onclick="appendFunction('ln')">ln</button>
-            <button onclick="appendPi()">π</button>
-            <button onclick="appendExp()">e</button>
-        </div>
-        <button class="expand-button" onclick="location.href='advanced_calc.html'">Розширений</button>
+      <button onclick="appendRoot()">&#8730;</button>
+      <button onclick="appendAbs()">|x|</button>
+      <button onclick="appendFactorial()">n!</button>
+      <button onclick="appendSquare()">x^2</button>
+
+      <button onclick="appendFunction('ln')">ln</button>
+      <button onclick="appendPi()">π</button>
+      <button onclick="appendExp()">e</button>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="func.js"></script>
-    <script src="theme.js"></script>
+    <button class="expand-button" onclick="location.href='advanced_calc.html'">
+      Розширений
+    </button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="func.js"></script>
+  <script src="theme.js"></script>
 </body>

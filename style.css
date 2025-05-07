@@ -59,6 +59,7 @@ button:hover {
     background: #0056b3;
 }
 
+
 button.operator {
     background: #28a745;
 }
@@ -217,7 +218,7 @@ input:checked + .slider::before {
 }
 
 .swal2-confirm {
-    background-color: #28a745 !important;
+    background-color: #007bff !important;
     color: white !important;
 }
 
@@ -249,3 +250,67 @@ input:checked + .slider::before {
     gap: 5px;
     margin-bottom: 5px;
 }
+.history-panel {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    min-width: 250px;
+}
+
+.history-panel h2 {
+    margin-top: 0;
+    font-size: 20px;
+    color: white;
+    text-align: center;  
+}
+
+#history-list {
+    list-style-type: none;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.history-item {
+    padding: 20px;
+    border-bottom: 1px solid #444;
+    font-size: 24px; 
+    color: #f0f0f0;
+    background-color: #2c2c2c;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.history-item:hover {
+    background-color: #444;
+}
+
+#clear-history {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#clear-history:hover {
+    background-color: #0056b3;
+}
+
+  .main-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px;
+  }
