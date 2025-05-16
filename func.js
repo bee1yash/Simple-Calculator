@@ -316,16 +316,18 @@ function calculate() {
 
     expression = expression.replace(/\^/g, "**");
 
-    expression = expression.replace(
-      /([\p{L}_][\p{L}\p{N}_]*)/gu,
-      (match, varName) => {
-        if (storedVariables[varName] !== undefined) {
-          let value = storedVariables[varName];
-          return !isNaN(value) ? Number(value) : `"${value}"`;
+    if (typeof storedVariables !== "undefined") {
+      expression = expression.replace(
+        /([\p{L}_][\p{L}\p{N}_]*)/gu,
+        (match, varName) => {
+          if (storedVariables[varName] !== undefined) {
+            let value = storedVariables[varName];
+            return !isNaN(value) ? Number(value) : `"${value}"`;
+          }
+          return match;
         }
-        return match;
-      }
-    );
+      );
+    }
 
     expression = expression
       .replace(
@@ -454,3 +456,6 @@ function clearHistory() {
   localStorage.removeItem("calcHistory");
   updateHistoryDisplay();
 }
+document.addEventListener("DOMContentLoaded", function () {
+  updateHistoryDisplay();
+});

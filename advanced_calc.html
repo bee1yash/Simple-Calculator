@@ -40,26 +40,30 @@
         <button onclick="operate('-')">-</button>
 
         <button onclick="append('0')">0</button>
+        <button onclick="append('(')">(</button>
+        <button onclick="append(')')">)</button>
         <button onclick="appendDot()">.</button>
         <button onclick="operate('+')">+</button>
+
+        <button onclick="appendPower()">x^y</button>
+        <button onclick="appendFunction('log')">log</button>
         <button onclick="calculate()" style="background-color: #007bff">
           =
         </button>
 
-        <button onclick="appendPower()">x^y</button>
-        <button onclick="appendFunction('log')">log</button>
         <button onclick="operate('Math.sin(')">sin</button>
-        <button onclick="clearDisplay()" style="background: #dc3545">C</button>
 
         <button onclick="operate('Math.cos(')">cos</button>
         <button onclick="operate('Math.tan(')">tan</button>
+        <button onclick="clearDisplay()" style="background: #dc3545">C</button>
+
         <button onclick="appendFunction('ctg')">ctg</button>
-        <button onclick="backspace()" style="background: #dc3545">
-          &#x232b;
-        </button>
 
         <button onclick="appendRoot()">&#8730;</button>
         <button onclick="appendAbs()">|x|</button>
+        <button onclick="backspace()" style="background: #dc3545">
+          &#x232b;
+        </button>
         <button onclick="appendFactorial()">n!</button>
         <button onclick="appendSquare()">x^2</button>
 
