@@ -251,18 +251,21 @@ input:checked + .slider::before {
     margin-bottom: 5px;
 }
 .history-panel {
-    background-color: #1e1e1e;
     padding: 20px;
-    border: 1px solid #ccc;
     border-radius: 10px;
     min-width: 250px;
 }
 
-.history-panel h2 {
+.dark-mode .history-panel {
+    background-color: #1e1e1e;
+    border: 1px solid #ccc;
+}
+
+.dark-mode .history-panel h2 {
     margin-top: 0;
     font-size: 20px;
     color: white;
-    text-align: center;  
+    text-align: center;
 }
 
 #history-list {
@@ -273,22 +276,22 @@ input:checked + .slider::before {
     margin-bottom: 10px;
 }
 
-.history-item {
+.dark-mode .history-item {
     padding: 20px;
     border-bottom: 1px solid #444;
-    font-size: 24px; 
+    font-size: 24px;
     color: #f0f0f0;
     background-color: #2c2c2c;
     border-radius: 5px;
     margin-bottom: 10px;
     text-align: center;
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
     transition: background-color 0.3s;
 }
 
-.history-item:hover {
+.dark-mode .history-item:hover {
     background-color: #444;
 }
 
@@ -307,10 +310,47 @@ input:checked + .slider::before {
     background-color: #0056b3;
 }
 
-  .main-layout {
+.main-layout {
     display: flex;
     flex-direction: row;
     gap: 20px;
     align-items: flex-start;
     padding: 20px;
-  }
+}
+
+.dark-mode #history-list::-webkit-scrollbar-track {
+    background: #2c2c2c;
+    border-radius: 5px;
+}
+
+.dark-mode #history-list::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 5px;
+    border: 2px solid #2c2c2c;
+}
+
+.dark-mode #history-list::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+.history-panel {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+}
+
+.history-panel h2 {
+    color: #333;
+}
+
+.history-item {
+    padding: 20px;
+    font-size: 24px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+    background-color: #eaeaea;
+}
+

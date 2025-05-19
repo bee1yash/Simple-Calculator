@@ -22,6 +22,16 @@ display.addEventListener("keydown", function (event) {
     event.preventDefault();
     return;
   }
+  if (event.key === "0") {
+    const value = display.value;
+    const parts = value.split(/[^0-9.]+/);
+    const lastPart = parts[parts.length - 1] || "";
+
+    if (/^0\d*$/.test(lastPart)) {
+      event.preventDefault();
+      return;
+    }
+  }
   if (event.key === "|") {
     const lastChar = display.value.slice(-1);
     if (lastChar === "|") {
@@ -158,7 +168,14 @@ function append(value) {
   readyInput();
 
   const lastChar = display.value.slice(-1);
+  if (value === "0") {
+    const parts = display.value.split(/[^0-9.]+/);
+    const lastPart = parts[parts.length - 1] || "";
 
+    if (/^0\d*$/.test(lastPart)) {
+      return;
+    }
+  }
   if (/[+\-*/]/.test(value)) {
     if (display.value === "") {
       if (value !== "-") return;
